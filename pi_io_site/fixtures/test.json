@@ -1,0 +1,45 @@
+[
+    {
+        "pk":"aa:bb:cc:dd:ee",
+        "model":"pi_io_site.raspberrypi",
+        "fields":{
+            "current_ip":"192.168.1.201",
+            "name":"SuperPi",
+            "mac_address":"aa:bb:cc:dd:ee",
+            "online":true
+        }
+    },
+    {
+        "pk":1,
+        "model":"pi_io_site.rpireadinterface",
+        "fields":{
+            "name":"ADC",
+            "possible_choices":"[{\"s\":1, \"d\":\"CH1\"}, {\"s\":2, \"d\":\"CH2\"}, {\"s\":3, \"d\":\"CH3\"}, {\"s\":4, \"d\":\"CH4\"}]",
+            "rpi":"aa:bb:cc:dd:ee",
+            "io_type":"I",
+            "description":"ADC description...."
+        }
+    },
+    {
+        "pk":1,
+        "model":"pi_io_site.rpiwriteinterface",
+        "fields":{
+            "name":"GPIO output",
+            "possible_choices":"[{\"s\":1, \"d\":\"GPIO1\"}, {\"s\":2, \"d\":\"GPIO2\"}, {\"s\":3, \"d\":\"GPIO3\"}, {\"s\":4, \"d\":\"GPIO4\"}]",
+            "rpi":"aa:bb:cc:dd:ee",
+            "io_type":"B",
+            "description":"Binary write, such as a relay"
+        }
+    },
+    {
+        "pk":2,
+        "model":"pi_io_site.rpireadinterface",
+        "fields":{
+            "name":"GPIO input",
+            "possible_choices":"[{\"s\":1, \"d\":\"GPIO1\"}, {\"s\":2, \"d\":\"GPIO2\"}, {\"s\":3, \"d\":\"GPIO3\"}, {\"s\":4, \"d\":\"GPIO4\"}]",
+            "rpi":"aa:bb:cc:dd:ee",
+            "io_type":"B",
+            "description":"Binary read, ex state of a switch"
+        }
+    }
+]

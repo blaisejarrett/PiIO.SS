@@ -1,0 +1,36 @@
+// for consistancy
+@import "../bootstrap/less/variables.less";
+// for background gradient
+@import "../bootstrap/less/mixins.less";
+
+@dropdownLinkBackgroundHoverOfflinePI: @red;
+@dropdownLinkBackgroundActiveOfflinePI: @dropdownLinkBackgroundHoverOfflinePI;
+
+
+body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+@media (max-width: @navbarCollapseWidth) {
+  body {
+    padding-top: 0px;
+  }
+}
+
+// offline RPIs
+// hover
+.dropdown-menu li > a.offline_pi:hover,
+.dropdown-menu li > a.offline_pi:focus {
+  text-decoration: none;
+  color: @dropdownLinkColorHover;
+  #gradient > .vertical(@dropdownLinkBackgroundHoverOfflinePI, darken(@dropdownLinkBackgroundHoverOfflinePI, 5%));
+}
+// active
+.dropdown-menu .active > a.offline_pi,
+.dropdown-menu .active > a.offline_pi:hover {
+  color: @dropdownLinkColorActive;
+  text-decoration: none;
+  outline: 0;
+  #gradient > .vertical(@dropdownLinkBackgroundActiveOfflinePI, darken(@dropdownLinkBackgroundActiveOfflinePI, 5%));
+}
