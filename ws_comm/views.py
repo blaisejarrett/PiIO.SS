@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from pi_io_site.models import *
+from ws_comm.client import push_config
 import urllib2
 import urllib
 import json
@@ -45,7 +46,9 @@ def register(request):
         update_iface(RPIReadInterface, 'read')
         update_iface(RPIWriteInterface, 'write')
 
-        print jreq
+        # send configs to the RPI
+        push_config(rpi_db)
+
 
     return HttpResponse('ok', mimetype='application/json')
 
@@ -66,11 +69,3 @@ def disconnect(request):
         rpi.save()
 
     return HttpResponse('ok', mimetype='application/json')
-
-def test(request):
-    post_data = {'a':43, 'b':11}
-    post_data = urllib.urlencode(post_data)
-    url = urllib2.Request('https://localhost:8090', post_data)
-    url_response = urllib2.urlopen(url)
-
-    return HttpResponse(url_response.read(), mimetype='application/json')

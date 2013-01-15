@@ -59,14 +59,9 @@ class Display(models.Model):
 class WriteDisplay(Display):
     interface = models.ForeignKey(RPIWriteInterface)
 
-    class Meta:
-        abstract = True
-
 class ReadDisplay(Display):
     interface = models.ForeignKey(RPIReadInterface)
 
-    class Meta:
-        abstract = True
 
 class NumericDisplay(ReadDisplay):
     io_type = (IOTypes.boolean, IOTypes.integer)
