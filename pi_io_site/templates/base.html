@@ -58,6 +58,12 @@
 <div class="container">
 
     <div class="row">
+        <div class="span6 offset3 messagecontainer">
+            <!-- js interface adds alerts here -->
+        </div>
+    </div>
+
+    <div class="row">
         <div class="span4">
             <h2>Box Number 1</h2>
             <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
@@ -103,6 +109,9 @@
     <script type="text/javascript" src="{% static "bootstrap/js/bootstrap-typeahead.js" %}"></script>
     <script type="text/javascript" src="{% static "bootstrap/js/bootstrap-affix.js" %}"></script>
 
+    <script type="text/javascript" src="{% static "js/websocket.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/interface.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/load.js" %}"></script>
 {% endblock %}
 {% endcompress %}
 
