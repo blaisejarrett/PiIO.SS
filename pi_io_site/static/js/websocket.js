@@ -16,16 +16,30 @@ function WSClient(url, debug) {
     };
 
     this.onerror = undefined;
+    this.rpiOnlineOffline = undefined;
 }
 
 WSClient.prototype.ws_onmessage = function(msg) {
+    var parsedMsg = jQuery.parseJSON(msg.data);
+    if (this.debug)
+        console.log(parsedMsg);
 
+    switch (parsedMsg.cmd) {
+        case 'rpi_schange':
+            // for now i don't care, just refresh menu
+            if (this.rpiOnlineOffline) this.rpiOnlineOffline(parsedMsg.rpi_state);
+            break;
+        default:
+            break;
+    }
 };
 
 WSClient.prototype.ws_onopen = function() {
     if (this.debug) {
         console.log('WS connected');
     }
+
+    // request connected RPI list
 };
 
 WSClient.prototype.ws_onclose = function() {

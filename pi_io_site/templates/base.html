@@ -36,14 +36,6 @@
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                        {% if not RaspberryPis %}
-                            <li><a href="">No RPIs online</a></li>
-                        {% else %}
-                        {% for pi in RaspberryPis %}
-                            <li><a href="">{{ pi.name }}</a></li>
-                        {% endfor %}
-                            <li><a href="" class="offline_pi">Abcd  Abcd Abcd - Offline</a></li>
-                        {% endif %}
                         </ul>
                     </li>
                 </ul>

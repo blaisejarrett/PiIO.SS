@@ -22,11 +22,9 @@ def register(request):
             return HttpResponseBadRequest('Does not have required fields', mimetype='application/json')
 
         # update rpi model
-        rpi_db, created = RaspberryPi.objects.get_or_create(mac_address=jreq['mac'], defaults={'current_ip':jreq['ip']})
+        rpi_db, created = RaspberryPi.objects.get_or_create(mac_address=jreq['mac'], defaults={'current_ip':jreq['ip'],
+                                                                        'name':'%s - %s' % (jreq['mac'], jreq['ip'])})
 
-        if created:
-            # create a default name
-            rpi_db.name = '%s - %s' % (jreq['mac'], jreq['ip'])
 
         rpi_db.current_ip = jreq['ip']
         rpi_db.online = True

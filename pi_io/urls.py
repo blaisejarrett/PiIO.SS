@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'pi_io_site.views.home', name='home'),
     url(r'^ws_comm/', include('ws_comm.urls')),
+    url(r'^user_api/', include('user_api.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
