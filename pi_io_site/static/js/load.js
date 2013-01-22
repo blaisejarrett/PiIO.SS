@@ -2,7 +2,7 @@ var client;
 
 $(document).ready(function() {
     getAjaxMenu();
-    client = new WSClient('wss://localhost:9000/', true);
+    client = new WSClient('ws://localhost:9000/', true);
 
     client.rpiOnlineOffline = function(state) {
         getAjaxMenu();
