@@ -15,8 +15,19 @@ function WSClient(url, debug) {
         self.ws_onerror(error);
     };
 
+    // callback for errors
     this.onerror = undefined;
+    // callback for state change
     this.rpiOnlineOffline = undefined;
+    // callback for config change
+    this.rpi_config_change = undefined;
+
+    this.clientcmds = {
+        'CONNECT_RPI':'rpi_connect'
+    };
+    this.servercmds = {
+        'RPI_STATE_CHANGE':'rpi_schange',
+    };
 }
 
 WSClient.prototype.ws_onmessage = function(msg) {
@@ -25,9 +36,13 @@ WSClient.prototype.ws_onmessage = function(msg) {
         console.log(parsedMsg);
 
     switch (parsedMsg.cmd) {
-        case 'rpi_schange':
+        case this.servercmds.RPI_STATE_CHANGE:
             // for now i don't care, just refresh menu
             if (this.rpiOnlineOffline) this.rpiOnlineOffline(parsedMsg.rpi_state);
+            // do a new ajax refresh of the displays
+            if (this.bound_rpi_mac == parsedMsg.rpi_mac) {
+                if (this.rpi_config_change) this.rpi_config_change(parsedMsg.rpi_mac);
+            }
             break;
         default:
             break;
@@ -54,4 +69,13 @@ WSClient.prototype.ws_onerror = function(error) {
     }
 
     if (this.onerror) this.onerror();
+};
+
+WSClient.prototype.request_rpi_stream = function(rpi_mac) {
+    msg = {
+        'cmd':this.clientcmds.CONNECT_RPI,
+        'rpi_mac':rpi_mac
+    };
+    this.ws.send(JSON.stringify(msg));
+    this.bound_rpi_mac = rpi_mac;
 };

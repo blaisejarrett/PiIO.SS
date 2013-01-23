@@ -1,0 +1,36 @@
+{% if not rpi.online %}
+    <div class="row">
+        <div class="span12">
+            <h2 style="text-align: center;">RPI {{ rpi.name }} is not online</h2>
+        </div>
+    </div>
+{% else %}
+    {% for display in displays %}
+        {% if display.instances %}
+            <hr>
+            <div class="row">
+                <div class="span12">
+                    <h2>{{ display.cls_name }}{{ display.instances|length|pluralize }}</h2>
+                </div>
+                {% for instance in display.instances %}
+                    <div class="span12">
+                        {% with display.cls_name|lower|add:".html" as template %}
+                            {% include template %}
+                        {% endwith %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endfor %}
+    {% comment %}
+    create JS data binding here
+    EX)
+    data_bindings = {
+	    'ADC, port:3, eq:whatever':{'id':'1', 'type_fnc':''},
+    }
+    {% endcomment %}
+    <script type="text/javascript">
+        data_bindings = jQuery.parseJSON('{{ data_bindings_json|safe }}');
+    </script>
+
+{% endif %}

@@ -1,5 +1,5 @@
 function Interface() {
-
+    this.rpi_menu_click = undefined;
 }
 
 Interface.prototype.notify = function(message, type, timeout) {
@@ -36,6 +36,7 @@ Interface.prototype.notify = function(message, type, timeout) {
 };
 
 Interface.prototype.createRpiList = function(data) {
+    var self = this;
     var dropdownul = $('.nav > .dropdown > ul.dropdown-menu');
     dropdownul.empty();
 
@@ -56,12 +57,10 @@ Interface.prototype.createRpiList = function(data) {
         (function(i, li, data){
             $(li).find('a').click(function(e) {
                 var context = {'domli':li, 'data':data[i]};
-                if (data[i]['click']) {
-                    data[i]['click'].call(context);
-                }
+                self.rpiClicked(context)
                 e.preventDefault();
             });
-        })(i, li, data);
+        })(i, li, data, self);
         li_lst.push(li);
     }
 
@@ -69,23 +68,23 @@ Interface.prototype.createRpiList = function(data) {
     return li_lst;
 };
 
-var interface = new Interface();
-
-function rpiClicked() {
+Interface.prototype.rpiClicked = function(context) {
     // context is {'domli':li, 'data':data[i]}
-    // if its offline, ignore it
-    if (this.data.online)
-    {
-
-    }
+    if (this.rpi_menu_click) this.rpi_menu_click(context);
 }
+
+var interface = new Interface();
 
 function getAjaxMenu(){
     $.getJSON('/user_api/rpis/', function(data){
-        for (var i in data) {
-            data[i]['click'] = rpiClicked;
-        }
         interface.menu = interface.createRpiList(data);
     });
 }
 
+function getAjaxDisplays(rpi_mac) {
+    $.get('/displays/' + encodeURIComponent(rpi_mac),
+        function(data) {
+            $('#displays_container').html(data);
+        }
+    );
+}

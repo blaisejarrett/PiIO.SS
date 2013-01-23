@@ -10,6 +10,8 @@ urlpatterns = patterns('',
     url(r'^ws_comm/', include('ws_comm.urls')),
     url(r'^user_api/', include('user_api.urls')),
 
+    url(r'^displays/(?P<rpi_mac>.+)$', 'pi_io_site.views.rpi_displays'),
+
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
