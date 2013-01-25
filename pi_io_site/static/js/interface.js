@@ -73,18 +73,36 @@ Interface.prototype.rpiClicked = function(context) {
     if (this.rpi_menu_click) this.rpi_menu_click(context);
 }
 
-var interface = new Interface();
-
-function getAjaxMenu(){
+Interface.prototype.getAjaxMenu = function() {
+    var self = this;
     $.getJSON('/user_api/rpis/', function(data){
-        interface.menu = interface.createRpiList(data);
+        self.menu = self.createRpiList(data);
     });
-}
+};
 
-function getAjaxDisplays(rpi_mac) {
+Interface.prototype.getAjaxDisplays = function(rpi_mac) {
+    var self = this;
     $.get('/displays/' + encodeURIComponent(rpi_mac),
         function(data) {
             $('#displays_container').html(data);
+
+            // construct object instances for data binds
+            if (data_bindings) {
+                for (var key in data_bindings) {
+                    data_bindings[key].instances = [];
+
+                    if (data_bindings[key].type in window) {
+                        var ref = window[data_bindings[key].type];
+
+                        for (var id_index in data_bindings[key].ids) {
+                            data_bindings[key].instances.push(new ref(data_bindings[key].ids[id_index]));
+                        }
+                    }
+                }
+            }
         }
     );
-}
+};
+
+
+var interface = new Interface();

@@ -13,7 +13,7 @@
                     <h2>{{ display.cls_name }}{{ display.instances|length|pluralize }}</h2>
                 </div>
                 {% for instance in display.instances %}
-                    <div class="span12">
+                    <div class="span12" id="{{ instance.id }}">
                         {% with display.cls_name|lower|add:".html" as template %}
                             {% include template %}
                         {% endwith %}
@@ -30,7 +30,7 @@
     }
     {% endcomment %}
     <script type="text/javascript">
-        data_bindings = jQuery.parseJSON('{{ data_bindings_json|safe }}');
+        data_bindings = {{ data_bindings_json|safe }};
     </script>
 
 {% endif %}

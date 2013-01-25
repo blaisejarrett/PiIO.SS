@@ -56,6 +56,11 @@
     </div>
     <div class="container" id="displays_container">
         <!-- displays get placed in here via ajax -->
+        <div class="row">
+            <div class="span12">
+                <h2 style="text-align: center;">To begin select a RPI</h2>
+            </div>
+        </div>
     </div>
     <hr>
 
@@ -90,6 +95,7 @@
 
     <script type="text/javascript" src="{% static "js/websocket.js" %}"></script>
     <script type="text/javascript" src="{% static "js/interface.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/numericdisplay_binding.js" %}"></script>
     <script type="text/javascript" src="{% static "js/load.js" %}"></script>
 {% endblock %}
 {% endcompress %}
