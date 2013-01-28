@@ -27,6 +27,7 @@ function WSClient(url, debug) {
     };
     this.servercmds = {
         'RPI_STATE_CHANGE':'rpi_schange',
+        'WRITE_DATA':'write_data'
     };
 }
 
@@ -42,6 +43,20 @@ WSClient.prototype.ws_onmessage = function(msg) {
             // do a new ajax refresh of the displays
             if (this.bound_rpi_mac == parsedMsg.rpi_mac) {
                 if (this.rpi_config_change) this.rpi_config_change(parsedMsg.rpi_mac);
+            }
+            break;
+        case this.servercmds.WRITE_DATA:
+            for (var key in parsedMsg.data) {
+                if (data_bindings && key in data_bindings) {
+
+                    for (var type in data_bindings[key]) {
+                        if (data_bindings[key][type].instances) {
+                            for (var index in data_bindings[key][type].instances) {
+                                data_bindings[key][type].instances[index].update(parsedMsg.data[key]);
+                            }
+                        }
+                    }
+                }
             }
             break;
         default:

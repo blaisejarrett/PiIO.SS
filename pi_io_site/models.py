@@ -66,11 +66,14 @@ class ReadDisplay(Display):
 class NumericDisplay(ReadDisplay):
     io_type = (IOTypes.boolean, IOTypes.integer)
 
+class ProgressBarDisplay(ReadDisplay):
+    io_type = (IOTypes.integer,)
+
 class GraphDisplay(ReadDisplay):
-    io_type = tuple(IOTypes.integer)
+    io_type = (IOTypes.integer,)
 
 class ButtonDisplay(WriteDisplay):
-    io_type = tuple(IOTypes.boolean)
+    io_type = (IOTypes.boolean,)
 
 
 

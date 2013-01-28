@@ -89,13 +89,12 @@ Interface.prototype.getAjaxDisplays = function(rpi_mac) {
             // construct object instances for data binds
             if (data_bindings) {
                 for (var key in data_bindings) {
-                    data_bindings[key].instances = [];
+                    for (var type in data_bindings[key]) {
+                        data_bindings[key][type].instances = [];
 
-                    if (data_bindings[key].type in window) {
-                        var ref = window[data_bindings[key].type];
-
-                        for (var id_index in data_bindings[key].ids) {
-                            data_bindings[key].instances.push(new ref(data_bindings[key].ids[id_index]));
+                        var ref = window[type];
+                        for (var id_index in data_bindings[key][type].ids) {
+                            data_bindings[key][type].instances.push(new ref(data_bindings[key][type].ids[id_index]));
                         }
                     }
                 }

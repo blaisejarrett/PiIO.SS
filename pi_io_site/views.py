@@ -4,7 +4,6 @@ from models import *
 import json
 
 def create_id(counter):
-    #return '%s, port:%d, eq:%s' % (db_instance.interface.name, db_instance.channel_port, db_instance.equation)
     return 'i_binding_%d' % (counter,)
 
 def rpi_displays(request, rpi_mac):
@@ -35,16 +34,22 @@ def rpi_displays(request, rpi_mac):
     read_and_write_displays = read_displays + write_displays
 
     #{'ADC, port:3, eq:whatever':{'id':'1', 'type_fnc':''},}
+    #{'ADC, port:3, eq:whatever':[{'id':'1', 'type_fnc':''},{}]}
+    #{'ADC, port:3, eq:whatever':{'type':'{'ids':['i_binding_2']}'},}
     data_bindings_json = {}
     for display in read_and_write_displays:
         for instance in display['instances']:
-            key = '%s, port:%d, eq:%s' % (instance['db'].interface.name,
+            key = 'cls:%s, port:%d, eq:%s' % (instance['db'].interface.name,
                                           instance['db'].channel_port,
                                           instance['db'].equation)
             if key not in data_bindings_json:
-                data_bindings_json[key] = {'ids':[instance['id']], 'type':display['cls_name'].lower()}
+                data_bindings_json[key] = {display['cls_name'].lower():{'ids':[instance['id']]}}
             else:
-                data_bindings_json[key]['ids'].append(instance['id'])
+                #data_bindings_json[key]['ids'].append(instance['id'])
+                if display['cls_name'].lower() not in data_bindings_json[key]:
+                    data_bindings_json[key][display['cls_name'].lower()] = {'ids':[instance['id']]}
+                else:
+                    data_bindings_json[key][display['cls_name'].lower()]['ids'].append(instance['id'])
 
     t = loader.get_template('displays.html')
     c = Context({

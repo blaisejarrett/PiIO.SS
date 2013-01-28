@@ -2,7 +2,7 @@ var client;
 
 $(document).ready(function() {
     interface.getAjaxMenu();
-    client = new WSClient('ws://localhost:9000/', true);
+    client = new WSClient('ws://192.168.1.207:9000/', true);
 
     interface.rpi_menu_click = function(context) {
         client.request_rpi_stream(context.data.mac);

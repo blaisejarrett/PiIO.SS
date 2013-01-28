@@ -61,6 +61,9 @@ Input/output and return/input type are determined by the model definition
 class NumericDisplayInLine(DisplayInline):
     model = NumericDisplay
 
+class ProgressBarDisplayInLine(DisplayInline):
+    model = ProgressBarDisplay
+
 class GraphDisplayInLine(DisplayInline):
     model = GraphDisplay
 
@@ -71,6 +74,6 @@ class RaspberryPiAdmin(admin.ModelAdmin):
     readonly_fields = ('mac_address', 'current_ip', 'online')
     fields = ('name', 'mac_address', 'current_ip', 'online')
     form = MyAdminForm
-    inlines = [NumericDisplayInLine, GraphDisplayInLine, ButtonDisplayInLine]
+    inlines = [NumericDisplayInLine, ProgressBarDisplayInLine, GraphDisplayInLine, ButtonDisplayInLine]
 
 admin.site.register(RaspberryPi, RaspberryPiAdmin)
