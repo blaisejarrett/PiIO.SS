@@ -26,7 +26,8 @@ function WSClient(url, debug) {
 
     this.clientcmds = {
         'CONNECT_RPI':'rpi_connect',
-        'ACK_DATA':'ack_data'
+        'ACK_DATA':'ack_data',
+        'WRITE_DATA':'write_data'
     };
     this.servercmds = {
         'RPI_STATE_CHANGE':'rpi_schange',
@@ -58,6 +59,19 @@ WSClient.prototype.ws_onmessage = function(msg) {
                         if (data_bindings[key][type].instances) {
                             for (var index in data_bindings[key][type].instances) {
                                 data_bindings[key][type].instances[index].update(parsedMsg.read[key]);
+                            }
+                        }
+                    }
+                }
+            }
+            // TODO: clean up duplicate code
+            for (var key in parsedMsg.write) {
+                if ('data_bindings' in window && key in data_bindings) {
+
+                    for (var type in data_bindings[key]) {
+                        if (data_bindings[key][type].instances) {
+                            for (var index in data_bindings[key][type].instances) {
+                                data_bindings[key][type].instances[index].update(parsedMsg.write[key]);
                             }
                         }
                     }
@@ -109,4 +123,13 @@ WSClient.prototype.request_rpi_stream = function(rpi_mac) {
     this.datamsgcount_ack = 0;
     this.ws.send(JSON.stringify(msg));
     this.bound_rpi_mac = rpi_mac;
+};
+
+WSClient.prototype.send_write_data = function(key, data) {
+    msg = {
+        'cmd':this.clientcmds.WRITE_DATA,
+        'iface_port':key,
+        'value':data
+    };
+    this.ws.send(JSON.stringify(msg));
 };

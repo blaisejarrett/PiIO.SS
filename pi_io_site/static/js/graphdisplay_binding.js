@@ -1,6 +1,6 @@
 // Display object has to be named lower case of python model class name
 // constructor always takes the id
-function graphdisplay(id, key) {
+function graphdisplay(id, key, wsclient) {
     this.domobj = $('#' + id + ' > div');
     this.data_counter = 0;
     // buffer stored in ms

@@ -1,6 +1,8 @@
 // Display object has to be named lower case of python model class name
 // constructor always takes the id
-function buttondisplay(id, key) {
+function buttondisplay(id, key, wsclient) {
+    console.log(wsclient);
+    this.wsclient = wsclient;
     this.domobj = $('#' + id + ' > p > span');
     this.key = key;
     this.button = $('#' + id + ' > button');
@@ -12,10 +14,15 @@ function buttondisplay(id, key) {
 }
 
 buttondisplay.prototype.update = function(value) {
-    this.domobj.text(value);
+    // For write displays value is a dict with two keys
+    // calculated
+    // real
+    this.domobj.text(value.calculated);
     this.current_value = value;
 };
 
 buttondisplay.prototype.click = function() {
-    alert(this.key);
+    // send the opposite of the current value
+    if (this.wsclient)
+        this.wsclient.send_write_data(this.key, !this.current_value.real);
 };

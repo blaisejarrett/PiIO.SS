@@ -1,5 +1,6 @@
 function Interface() {
     this.rpi_menu_click = undefined;
+    this.wsclient = undefined;
 }
 
 Interface.prototype.notify = function(message, type, timeout) {
@@ -93,7 +94,9 @@ Interface.prototype.getAjaxDisplays = function(rpi_mac, callback) {
 
                         var ref = window[type];
                         for (var id_index in data_bindings[key][type].ids) {
-                            data_bindings[key][type].instances.push(new ref(data_bindings[key][type].ids[id_index], key));
+                            data_bindings[key][type].instances.push(
+                                new ref(data_bindings[key][type].ids[id_index], key, self.wsclient)
+                            );
                         }
                     }
                 }

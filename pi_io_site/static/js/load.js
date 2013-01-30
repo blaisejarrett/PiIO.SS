@@ -2,7 +2,9 @@ var client;
 
 $(document).ready(function() {
     interface.getAjaxMenu();
-    client = new WSClient('ws://192.168.1.207:9000/', false);
+    client = new WSClient('ws://192.168.1.207:9000/', true);
+    // the interface needs to be aware of the ws client to delegate data write requests
+    interface.wsclient = client;
 
     interface.rpi_menu_click = function(context) {
         interface.getAjaxDisplays(context.data.mac, function(){

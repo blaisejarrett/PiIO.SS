@@ -1,6 +1,6 @@
 // Display object has to be named lower case of python model class name
 // constructor always takes the id
-function progressbardisplay(id, key) {
+function progressbardisplay(id, key, wsclient) {
     this.domobj = $('#' + id + ' > div.progress > div.custombar');
 }
 
