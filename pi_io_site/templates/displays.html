@@ -6,21 +6,23 @@
     </div>
 {% else %}
     {% for display in displays %}
-        {% if display.instances %}
-            <hr>
-            <div class="row">
-                <div class="span12">
-                    <h2>{{ display.cls_name }}{{ display.instances|length|pluralize }}</h2>
-                </div>
-                {% for instance in display.instances %}
-                    <div class="span12" id="{{ instance.id }}">
-                        {% with display.cls_name|lower|add:".html" as template %}
-                            {% include template %}
-                        {% endwith %}
-                    </div>
-                {% endfor %}
-            </div>
+        {% if not forloop.first %}
+        <hr>
         {% endif %}
+        <div class="row">
+            {% for instance in display.instances %}
+                {% if instance.db.label %}
+                <div class="span12">
+                    <h2>{{ instance.db.label }}</h2>
+                </div>
+                {% endif %}
+                <div class="span12" id="{{ instance.id }}">
+                    {% with display.cls_name|lower|add:".html" as template %}
+                        {% include template %}
+                    {% endwith %}
+                </div>
+            {% endfor %}
+        </div>
     {% endfor %}
     {% comment %}
     create JS data binding here

@@ -17,7 +17,7 @@ function graphdisplay(id, key) {
         //yaxis: { min: 0, max: 100 },
         xaxis: {
             mode: 'time',
-            timeformat: '%h:%M:%S'
+            timeformat: '%M:%S'
         },
         colors: ['#049cdb']
     };

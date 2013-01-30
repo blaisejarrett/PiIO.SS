@@ -21,6 +21,8 @@ def rpi_displays(request, rpi_mac):
         lst_of_cls = []
         for display_cls in display_cls_lst:
             db_instances = display_cls.objects.filter(interface__in=display_iface)
+            if db_instances.count() == 0:
+                continue
             modified_db_instances = []
             for db_instance in db_instances:
                 counter += 1
