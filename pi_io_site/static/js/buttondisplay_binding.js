@@ -17,7 +17,8 @@ buttondisplay.prototype.update = function(value) {
     // For write displays value is a dict with two keys
     // calculated
     // real
-    this.domobj.text(value.calculated);
+    var text = (value.calculated) ? 'On' : 'Off';
+    this.domobj.text(text);
     this.current_value = value;
 };
 
