@@ -96,8 +96,15 @@
 
     <script type="text/javascript" src="{% static "js/websocket.js" %}"></script>
     <script type="text/javascript" src="{% static "js/interface.js" %}"></script>
+
+    <script type="text/javascript" src="{% static "flot/jquery.flot.js" %}"></script>
+    <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="{% static "flot/excanvas.min.js" %}"></script><![endif]-->
+    <!-- display bindings -->
     <script type="text/javascript" src="{% static "js/numericdisplay_binding.js" %}"></script>
     <script type="text/javascript" src="{% static "js/progressbardisplay_binding.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/buttondisplay_binding.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/graphdisplay_binding.js" %}"></script>
+
     <script type="text/javascript" src="{% static "js/load.js" %}"></script>
 {% endblock %}
 {% endcompress %}

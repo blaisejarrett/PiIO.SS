@@ -1,6 +1,6 @@
 // Display object has to be named lower case of python model class name
 // constructor always takes the id
-function numericdisplay(id) {
+function numericdisplay(id, key) {
     this.domobj = $('#' + id + ' > p > span');
 }
 

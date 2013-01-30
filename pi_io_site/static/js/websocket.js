@@ -22,8 +22,11 @@ function WSClient(url, debug) {
     // callback for config change
     this.rpi_config_change = undefined;
 
+    this.datamsgcount_ack = 0;
+
     this.clientcmds = {
-        'CONNECT_RPI':'rpi_connect'
+        'CONNECT_RPI':'rpi_connect',
+        'ACK_DATA':'ack_data'
     };
     this.servercmds = {
         'RPI_STATE_CHANGE':'rpi_schange',
@@ -46,18 +49,30 @@ WSClient.prototype.ws_onmessage = function(msg) {
             }
             break;
         case this.servercmds.WRITE_DATA:
-            for (var key in parsedMsg.data) {
-                if (data_bindings && key in data_bindings) {
+            this.datamsgcount_ack++;
+
+            for (var key in parsedMsg.read) {
+                if ('data_bindings' in window && key in data_bindings) {
 
                     for (var type in data_bindings[key]) {
                         if (data_bindings[key][type].instances) {
                             for (var index in data_bindings[key][type].instances) {
-                                data_bindings[key][type].instances[index].update(parsedMsg.data[key]);
+                                data_bindings[key][type].instances[index].update(parsedMsg.read[key]);
                             }
                         }
                     }
                 }
             }
+
+            if (this.datamsgcount_ack >= 5) {
+                push_msg = {
+                    'cmd':this.clientcmds.ACK_DATA,
+                    'ack_count':this.datamsgcount_ack
+                };
+                this.ws.send(JSON.stringify(push_msg));
+                this.datamsgcount_ack = 0;
+            }
+
             break;
         default:
             break;
@@ -91,6 +106,7 @@ WSClient.prototype.request_rpi_stream = function(rpi_mac) {
         'cmd':this.clientcmds.CONNECT_RPI,
         'rpi_mac':rpi_mac
     };
+    this.datamsgcount_ack = 0;
     this.ws.send(JSON.stringify(msg));
     this.bound_rpi_mac = rpi_mac;
 };

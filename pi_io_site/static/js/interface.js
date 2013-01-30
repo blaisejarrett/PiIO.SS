@@ -80,12 +80,11 @@ Interface.prototype.getAjaxMenu = function() {
     });
 };
 
-Interface.prototype.getAjaxDisplays = function(rpi_mac) {
+Interface.prototype.getAjaxDisplays = function(rpi_mac, callback) {
     var self = this;
     $.get('/displays/' + encodeURIComponent(rpi_mac),
         function(data) {
             $('#displays_container').html(data);
-
             // construct object instances for data binds
             if (data_bindings) {
                 for (var key in data_bindings) {
@@ -94,11 +93,12 @@ Interface.prototype.getAjaxDisplays = function(rpi_mac) {
 
                         var ref = window[type];
                         for (var id_index in data_bindings[key][type].ids) {
-                            data_bindings[key][type].instances.push(new ref(data_bindings[key][type].ids[id_index]));
+                            data_bindings[key][type].instances.push(new ref(data_bindings[key][type].ids[id_index], key));
                         }
                     }
                 }
             }
+            if (callback) callback();
         }
     );
 };
