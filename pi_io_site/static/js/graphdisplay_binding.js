@@ -5,12 +5,14 @@ function graphdisplay(id, key, wsclient) {
     this.data_counter = 0;
     // buffer stored in ms
     this.time_len = 10000;
-    this.update_interval = 30;
+    this.update_interval = 40;
     this.data = [];
     this.data_len = parseInt(this.time_len / this.update_interval);
     this.last_data_point = 0;
 
     this.no_data = true;
+
+    this.stop_timer = false;
 
     var options = {
         series: { shadowSize: 0 }, // drawing is faster without shadows
@@ -25,6 +27,9 @@ function graphdisplay(id, key, wsclient) {
 }
 
 graphdisplay.prototype.timer = function() {
+    if (this.stop_timer)
+        return;
+
     var t = Date.now();
     var self = this;
 
@@ -47,4 +52,11 @@ graphdisplay.prototype.update = function(value) {
         this.no_data = false;
         this.timer();
     }
+};
+
+graphdisplay.prototype.close = function() {
+    // this doesn't seem to work...
+    // function is called but Flot later throws an exception
+    this.stop_timer = true;
+    this.plot.shutdown();
 };

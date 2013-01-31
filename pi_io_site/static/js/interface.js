@@ -72,7 +72,7 @@ Interface.prototype.createRpiList = function(data) {
 Interface.prototype.rpiClicked = function(context) {
     // context is {'domli':li, 'data':data[i]}
     if (this.rpi_menu_click) this.rpi_menu_click(context);
-}
+};
 
 Interface.prototype.getAjaxMenu = function() {
     var self = this;
@@ -85,9 +85,10 @@ Interface.prototype.getAjaxDisplays = function(rpi_mac, callback) {
     var self = this;
     $.get('/displays/' + encodeURIComponent(rpi_mac),
         function(data) {
+            interface.cleanup();
             $('#displays_container').html(data);
             // construct object instances for data binds
-            if (data_bindings) {
+            if ('data_bindings' in window) {
                 for (var key in data_bindings) {
                     for (var type in data_bindings[key]) {
                         data_bindings[key][type].instances = [];
@@ -106,5 +107,18 @@ Interface.prototype.getAjaxDisplays = function(rpi_mac, callback) {
     );
 };
 
+Interface.prototype.cleanup = function() {
+    if ('data_bindings' in window) {
+        for (var key in data_bindings) {
+            for (var type in data_bindings[key]) {
+                for (var instance_index in data_bindings[key][type].instances) {
+                    if (data_bindings[key][type].instances[instance_index].close) {
+                        data_bindings[key][type].instances[instance_index].close();
+                    }
+                }
+            }
+        }
+    }
+};
 
 var interface = new Interface();

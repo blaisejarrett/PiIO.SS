@@ -17,10 +17,6 @@ function WSClient(url, debug) {
 
     // callback for errors
     this.onerror = undefined;
-    // callback for state change
-    this.rpiOnlineOffline = undefined;
-    // callback for config change
-    this.rpi_config_change = undefined;
 
     this.datamsgcount_ack = 0;
 
@@ -43,10 +39,27 @@ WSClient.prototype.ws_onmessage = function(msg) {
     switch (parsedMsg.cmd) {
         case this.servercmds.RPI_STATE_CHANGE:
             // for now i don't care, just refresh menu
-            if (this.rpiOnlineOffline) this.rpiOnlineOffline(parsedMsg.rpi_state);
-            // do a new ajax refresh of the displays
-            if (this.bound_rpi_mac == parsedMsg.rpi_mac) {
-                if (this.rpi_config_change) this.rpi_config_change(parsedMsg.rpi_mac);
+            switch(parsedMsg.rpi_state)
+            {
+                case 'drop_stream':
+                    // when any RPI drops from its streaming state
+                    // this occurs when a RPI gets reconfigured (admin change)
+                    if (this.e_rpi_drop_stream) this.e_rpi_drop_stream(parsedMsg.rpi_mac);
+                    break;
+                case 'stream':
+                    // when any RPI begins streaming
+                    if (this.e_rpi_stream) this.e_rpi_stream(parsedMsg.rpi_mac);
+                    break;
+                case 'online':
+                    // when any RPI comes online
+                    if (this.e_rpi_online) this.e_rpi_online(parsedMsg.rpi_mac);
+                    break;
+                case 'offline':
+                    // when any RPI goes offline
+                    if (this.e_rpi_offline) this.e_rpi_offline(parsedMsg.rpi_mac);
+                    break;
+                default:
+                    break;
             }
             break;
         case this.servercmds.WRITE_DATA:
@@ -120,9 +133,16 @@ WSClient.prototype.request_rpi_stream = function(rpi_mac) {
         'cmd':this.clientcmds.CONNECT_RPI,
         'rpi_mac':rpi_mac
     };
-    this.datamsgcount_ack = 0;
+    if (this.debug) {
+        console.log(msg);
+    }
     this.ws.send(JSON.stringify(msg));
+    this.datamsgcount_ack = 0;
     this.bound_rpi_mac = rpi_mac;
+};
+
+WSClient.prototype.unregister_rpi = function() {
+    this.bound_rpi_mac = null;
 };
 
 WSClient.prototype.send_write_data = function(key, data) {
