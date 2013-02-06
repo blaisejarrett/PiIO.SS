@@ -28,10 +28,12 @@ function graphdisplay(id, key, wsclient) {
 
 graphdisplay.prototype.timer = function() {
     if (this.stop_timer)
+    {
+        clearInterval(this.interval);
         return;
+    }
 
     var t = Date.now();
-    var self = this;
 
     if (this.data.length >= this.data_len)
         this.data = this.data.slice(1);
@@ -40,17 +42,18 @@ graphdisplay.prototype.timer = function() {
     this.plot.setData([this.data]);
     this.plot.setupGrid();
     this.plot.draw();
-
-    setTimeout(function(){
-        self.timer();
-    }, this.update_interval);
 };
 
 graphdisplay.prototype.update = function(value) {
     this.last_data_point = value;
+    var self = this;
+
     if (this.no_data) {
         this.no_data = false;
         this.timer();
+        this.interval = setInterval(function(){
+            self.timer();
+        }, this.update_interval);
     }
 };
 
