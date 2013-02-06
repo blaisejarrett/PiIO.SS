@@ -7,7 +7,7 @@ Raspberry Pi remote IO
 *  Django
 *  Django Compressor
 *  Less compiler
-*  PiIO Websocket Server
+*  PiIO WebSocket Server
 
 ## Details
 Further details are available on my [site](http://blaisejarrett.com/projects/piio/).
